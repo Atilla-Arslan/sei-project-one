@@ -1,0 +1,92 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  background: rgb(44, 43, 53);
+}
+
+.grid-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.back-grid {
+  height: 930px;
+  width: 930px;
+  align-items: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 30px;
+
+  justify-content: center;
+  background-image: url(/images/pokemon_terrain_trees_new2.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+  height: 770px;
+  width: 800px;
+}
+
+.grid div {
+  /* border: 1px solid white; */
+  flex-grow: 1;
+  height: 5%;
+  width: 5%;
+  color: rgb(68, 0, 255);
+}
+
+.grid div.player {
+  background-image: url('https://projectpokemon.org/images/normal-sprite/pikachu-alolacap.gif');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: 0.2rem;
+  cursor: pointer;
+  transform: scale(1.3);
+
+  overflow: visible;
+  position: relative;
+}
+.grid div.player-right {
+  background-image: url('https://projectpokemon.org/images/normal-sprite/pikachu-alolacap.gif');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: 0.2rem;
+  cursor: pointer;
+  transform: scale(1.3) rotateY(180deg);
+  overflow: visible;
+  position: relative;
+}
+.grid div.player-up {
+  background-image: url('https://projectpokemon.org/images/sprites-models/normal-back/pikachu-alolacap.gif');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: -0.4rem;
+  cursor: pointer;
+  transform: scale(1.6);
+  overflow: visible;
+  position: relative;
+}
+
+.pokeball {
+  background-image: url('/images/pokeball-copy.png');
+  background-repeat: no-repeat;
+  background-size: 1.5rem;
+  background-position-x: 0.2rem;
+  background-position-y: 0.9rem;
+
+  overflow: visible;
+  position: relative;
+}
+
+/* https://cdn.dribbble.com/users/621155/screenshots/2835314/simple_pokeball.gif */
