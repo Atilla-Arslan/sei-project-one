@@ -4,9 +4,27 @@
     <meta charset="utf-8" />
     <title>Pokemon pacman</title>
     <link rel="stylesheet" href="styles/main.css" />
+    <link rel="shortcut icon" href="#" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="//db.onlinewebfonts.com/c/f4d1593471d222ddebd973210265762a?family=Pokemon"
+      rel="stylesheet"
+      type="text/css"
+    />
     <script src="scripts/app.js" charset="utf-8"></script>
   </head>
   <body>
+    <header>
+      <div class="logo"><img src="./images/pokemonpacmanlogo.png" /></div>
+      <div class="counters">
+        <div class="lives">Lives:<span class="life-span"></span></div>
+        <div class="score">Score:<span class="score-span"> 000</span></div>
+      </div>
+    </header>
     <div class="grid-wrapper">
       <div class="back-grid">
         <div class="trees">
@@ -14,5 +32,8 @@
         </div>
       </div>
     </div>
+    <audio src="./sounds/main-theme.mp3"></audio>
+    <audio class="pika" src="./sounds/Pikaaaa.mp3"></audio>
+    <audio class="pikachuu" src="./sounds/Pikachu Sound Effect.mp3"></audio>
   </body>
 </html>

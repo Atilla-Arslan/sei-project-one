@@ -3,12 +3,21 @@ function init() {
   // Selectors * classes
 
   const grid = document.querySelector('.grid')
-  const allCells = document.querySelectorAll('div')
+
   const playerClass = 'player'
   const playerClassRight = 'player-right'
   const playerClassUp = 'player-up'
   const wall = 'wall'
+  const audio = document.querySelector('audio')
+  const pika = document.querySelector('.pika')
+  const pikachuu = document.querySelector('.pikachuu')
+  const scoreSelector = document.querySelector('.score-span')
+  const lifeSelector = document.querySelector('.life-span')
 
+  let score = 0
+
+  let lives = 3
+  lifeSelector.innerHTML = lives
   // Map paramters
 
   const width = 20
@@ -16,7 +25,6 @@ function init() {
 
   // Arrays containing cell info
   const cells = []
-  const itemsOnGrid = []
 
   // Where PLAYER starts
 
@@ -40,10 +48,25 @@ function init() {
     cellsWithBall: [balls]
   }
 
-  items.cellsWithBall.concat(balls)
-  console.log(items.cellsWithBall)
-  //console.log(balls)
-  //items.cellsWithBall.push(balls)
+  //* NPC OBJECTS
+
+  class Npc {
+    constructor(classOne, classTwo, start, speed) {
+      this.classOne = classOne
+      this.classTwo = classTwo
+      this.start = start
+      this.speed = speed
+      this.current = this.start
+      this.timerID = NaN
+    }
+  }
+
+  const npcs = [
+    new Npc('ghastly', 'ghastly-two', 150, 250),
+    new Npc('ghastly', 'ghastly-two', 239, 250),
+    new Npc('ghastly', 'ghastly-two', 325, 250),
+    new Npc('ghastly', 'ghastly-two', 19, 250)
+  ]
 
   //* GRID GENERATOR
 
@@ -55,7 +78,7 @@ function init() {
       const cell = document.createElement('div')
 
       // Set cell number based on i (Turn on for development reasons to see cell index)
-      //cell.innerHTML = i
+      // cell.innerHTML = i
 
       // Add each div to parent grid as children
       grid.appendChild(cell)
@@ -67,6 +90,34 @@ function init() {
   }
 
   createGrid(playerStartPosition)
+
+  //* Game engine
+
+  function startTimer() {
+    timerID = setInterval(() => {
+      if (score === 21500) {
+        resetGame()
+        clearInterval(timerID)
+
+        // window.alert(`Game Over - your score is ${score}`)
+        resetScore()
+      }
+    }, 1000)
+  }
+
+  startTimer()
+
+  function resetGame() {
+    resetPlayer()
+    playerCurrentPosition = playerStartPosition
+    addItemsToGrid(balls, items.class)
+    addPlayer(playerStartPosition)
+  }
+
+  function resetScore() {
+    score = 0
+    scoreSelector.innerHTML = score
+  }
 
   // * Create the walls from the trees / function to add any item to grid
 
@@ -88,11 +139,93 @@ function init() {
   addItemsToGrid(cellsWithWalls, wall)
   addItemsToGrid(balls, items.class)
 
+  //* NPC's
+
+  // Add all ghosts to the grid
+
+  npcs.forEach((npc) => {
+    cells[npc.current].classList.add(npc.classTwo)
+    cells[npc.current].classList.add('npc')
+  })
+
+  //move npc randomly
+  //npcs.forEach((npc) => moveNpc(npc))
+
+  // Function to move npc
+  function moveNpc(npc) {
+    const npcMoves = [-1, +1, -width, width]
+    let direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
+
+    npc.timerID = setInterval(function () {
+      // if cell doesn't contain wall or npc you can move there
+      if (
+        !cells[npc.current + direction].classList.contains(wall) &&
+        !cells[npc.current + direction].classList.contains('npc')
+      ) {
+        //Remove Npc class
+        cells[npc.current].classList.remove(npc.classTwo, 'ghastly-two')
+        // move ghost to direction
+        npc.current += direction
+        cells[npc.current].classList.add(npc.classTwo, 'ghost')
+      } else {
+        direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
+      }
+    }, npc.speed)
+  }
+
+  // cells[npc.current + direction] % width !== width - 1 &&
+  //   cells[npc.current + direction] % width !== 0 &&
+  //   cells[npc.current + direction] >= width &&
+  //   cells[npc.current + direction] + width <= width * width - 1
+  //
+
+  // Load NPC 1
+
+  // if (cells[npc[0].startPosition].classList.contains(items.class) === true) {
+  //   cells[npc[0].startPosition].classList.remove(items.class)
+  //   cells[npc[0].currentPosition].classList.add(npc[0].class)
+  // }
+
+  // function npcMove() {
+  //   moveNpc = setInterval(() => {
+  //     // Remove class of npc
+  //     cells[npc[0].currentPosition].classList.remove(npc[0].class)
+  //     cells[npc[0].currentPosition].classList.remove(npc[0].classTwo)
+
+  //     // If the cell contains an item add class two if not add class one to stop bug
+  //     if (
+  //       cells[npc[0].currentPosition].classList.contains(items.class) === true
+  //     ) {
+  //       cells[npc[0].currentPosition].classList.add(npc[0].classTwo)
+  //     } else {
+  //       cells[npc[0].currentPosition].classList.add(npc[0].class)
+  //     }
+  //   }, 1000)
+  // }
+  // npcMove()
+
   //* Remove class if player on cell
 
   function removeItem() {
     if (cells[playerCurrentPosition].classList.contains(items.class) === true) {
+      pikaPlay()
       cells[playerCurrentPosition].classList.remove(items.class)
+      score = score += 100
+      scoreSelector.innerHTML = score
+    } else {
+      pikachuPlay()
+    }
+  }
+
+  function resetPlayer() {
+    if (
+      cells[playerCurrentPosition].classList.contains(
+        playerClass || playerClassRight || playerClassUp
+      ) === true
+    ) {
+      cells[playerCurrentPosition].classList.remove(playerClass)
+      cells[playerCurrentPosition].classList.remove(playerClassRight)
+      cells[playerCurrentPosition].classList.remove(playerClassUp)
     }
   }
 
@@ -101,21 +234,21 @@ function init() {
   // Position = paramters for passing index where cat should appear, argument passed through when function called.
 
   function addPlayer(position) {
-    // Adds cats to poisition in grid at index betwen []
+    // Adds player to position in grid at index betwen []
 
     cells[position].classList.add(playerClass)
   }
   function addPlayerRight(position) {
-    // Adds cats to poisition in grid at index betwen []
+    // Adds player to position in grid at index betwen []
     cells[position].classList.add(playerClassRight)
   }
   function addPlayerUp(position) {
-    // Adds cats to poisition in grid at index betwen []
+    // Adds player to position in grid at index betwen []
     cells[position].classList.add(playerClassUp)
   }
 
   function removePlayer(position) {
-    // removecats to poisition in grid at index betwen []
+    // Remove player to position in grid at index betwen []
     cells[position].classList.remove(playerClass)
     cells[position].classList.remove(playerClassRight)
     cells[position].classList.remove(playerClassUp)
@@ -175,9 +308,55 @@ function init() {
     addPlayer(playerCurrentPosition)
   }
 
+  //* Play audio
+
+  function pikaPlay() {
+    if (pika.paused) {
+      pika.play()
+    } else {
+      pika.currentTime = 0
+    }
+  }
+  function pikachuPlay() {
+    if (pikachuu.paused) {
+      pikachuu.play()
+    } else {
+      pikachuu.currentTime = 0
+    }
+  }
+
+  //audio.play()
+  audio.volume = 0.2
   //* Event listeners
 
   document.addEventListener('keydown', handleKeyUp)
+
+  // DISABLE arrow scrolling cross browsers
+
+  window.addEventListener(
+    'keydown',
+    (e) => {
+      if (e.target.localName != 'input') {
+        // if you need to filter <input> elements
+        switch (e.keyCode) {
+          case 37: // left
+          case 39: // right
+            e.preventDefault()
+            break
+          case 38: // up
+          case 40: // down
+            e.preventDefault()
+            break
+          default:
+            break
+        }
+      }
+    },
+    {
+      capture: true, // this disables arrow key scrolling in modern Chrome
+      passive: false // this is optional
+    }
+  )
 }
 
 window.addEventListener('DOMContentLoaded', init)
