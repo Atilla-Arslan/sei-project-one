@@ -148,8 +148,8 @@ function init() {
     cells[npc.current].classList.add('npc')
   })
 
-  //move npc randomly
-  //npcs.forEach((npc) => moveNpc(npc))
+  //pass each npc in the object through the move npc function
+  npcs.forEach((npc) => moveNpc(npc))
 
   // Function to move npc
   function moveNpc(npc) {
@@ -158,26 +158,30 @@ function init() {
 
     npc.timerID = setInterval(function () {
       // if cell doesn't contain wall or npc you can move there
+
       if (
+        (cells[npc.current + direction] % width !== width - 1 ||
+          cells[npc.current + direction] % width !== 0 ||
+          cells[npc.current + direction] >= width ||
+          cells[npc.current + direction] + width <= width * width - 1) &&
         !cells[npc.current + direction].classList.contains(wall) &&
         !cells[npc.current + direction].classList.contains('npc')
       ) {
         //Remove Npc class
+        console.log('condition met')
+        console.log(cells[npc.current + direction])
         cells[npc.current].classList.remove(npc.classTwo, 'ghastly-two')
         // move ghost to direction
+
         npc.current += direction
+        console.log(cells[npc.current + direction])
         cells[npc.current].classList.add(npc.classTwo, 'ghost')
       } else {
+        console.log('not met')
         direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
       }
     }, npc.speed)
   }
-
-  // cells[npc.current + direction] % width !== width - 1 &&
-  //   cells[npc.current + direction] % width !== 0 &&
-  //   cells[npc.current + direction] >= width &&
-  //   cells[npc.current + direction] + width <= width * width - 1
-  //
 
   // Load NPC 1
 
