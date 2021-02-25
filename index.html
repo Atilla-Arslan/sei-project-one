@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
-    <title>Pokemon pacman</title>
+    <title>Pokemon Pacman</title>
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="shortcut icon" href="#" />
     <link
@@ -18,21 +18,47 @@
     <script src="scripts/app.js" charset="utf-8"></script>
   </head>
   <body>
-    <header>
-      <div class="header-container">
-        <div class="logo">
-          <img src="./images/pokemonpacmanlogo.png" />
-        </div>
-        <div class="counters">
-          <div class="lives">Lives:<span class="life-span"></span></div>
-          <div class="score">Score:<span class="score-span"> 000</span></div>
+    <div class="beginning-overlay display">
+      <div class="beginning-wrapper">
+        <div class="beginning-content">
+          <div><img src="/images/pokemonpacmanlogo.png" /></div>
+          <nav>
+            <p>
+              Use arrow keys to collect pokeballs &amp; avoid the ghost Pokemon.
+            </p>
+            <button id="start" class="display">Start Game!</button>
+          </nav>
         </div>
       </div>
-    </header>
-    <div class="grid-wrapper">
-      <div class="back-grid">
-        <div class="trees">
-          <div class="grid"></div>
+    </div>
+
+    <div class="end-overlay">
+      <div><img src="/images/pokemonpacmanlogo.png" /></div>
+      <div class="end-wrapper">
+        <p class="end-text"></p>
+      </div>
+      <nav>
+        <button class="play_again">play again?</button>
+      </nav>
+    </div>
+
+    <div class="wrapper">
+      <header>
+        <div class="header-container">
+          <div class="logo">
+            <img src="./images/pokemonpacmanlogo.png" />
+          </div>
+          <div class="counters">
+            <div class="lives">Lives:<span class="life-span"></span></div>
+            <div class="score">Score:<span class="score-span"> 000</span></div>
+          </div>
+        </div>
+      </header>
+      <div class="grid-wrapper">
+        <div class="back-grid">
+          <div class="trees">
+            <div class="grid"></div>
+          </div>
         </div>
       </div>
     </div>

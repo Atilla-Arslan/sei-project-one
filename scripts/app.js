@@ -14,6 +14,15 @@ function init() {
   const scoreSelector = document.querySelector('.score-span')
   const lifeSelector = document.querySelector('.life-span')
 
+  const startButton = document.querySelector('#start')
+  const playAgainButton = document.querySelector('.play_again')
+  const beginningWrapper = document.querySelector('.beginning-wrapper')
+  const beginningOverlay = document.querySelector('.beginning-overlay')
+  const endWrapper = document.querySelector('.end-wrapper')
+  const endOverlay = document.querySelector('.end-overlay')
+
+  //const cover = document.querySelector('.cover')
+
   let score = 0
 
   let lives = 3
@@ -28,9 +37,9 @@ function init() {
 
   // Where PLAYER starts
 
-  const playerStartPosition = 22
+  const playerStartPosition = 21
   // Where cat is now
-  let playerCurrentPosition = 22
+  let playerCurrentPosition = 21
 
   //* WALLS
 
@@ -40,7 +49,7 @@ function init() {
 
   //29,30,49,50,89,90,109,110,44,45,64,65,84,85,104,105,124,125,144,145,86,87,106,107,41,42,61,62,81,82,101,102,121,122,141,142,181,182,201,202,221,222,241,242,184,185,204,205,224,225,244,245,264,265,284, 285,304,305,281,282,301,302,321,322,341,342,344, 345, 364, 365, 384, 385, 347, 348, 349, 350, 351, 352, 367, 368 ,369, 370, 371 ,372, 389, 390, 147,148,167,168,187,188,169,170,189,190,151,152,171,172,191,192, 347,348,349,350,351,352,367,368,369,370,371,372,389,390, 92, 93, 112,113,54,55,74,75,94,95,114,115,134,135,154,155,194,195,214,215,234,235,254,255,274,275,294,295,314,315,354,355,374,375,394,395, 57,58,77,78,97,98,117,118,137,138,157,158,197,198,217,218,237,238,257,258,297,298,317,318,337,338,357,358, 247,248,249,250,251,252,267,268,269,270,271,272,289,290,309,310
 
-  const cellsWithWalls = []
+  const cellsWithWalls = [62,63,82,83,102,103,122,123,142,143, 182,183,202,203,222,223,242,243,282,283,302,303,322,323,342,343,66,85,86,87,105,106,107,125,126,145,146,185,186,205,206,245,246,265,266,285,286,345,346,365,366,29,30,39,50,69,70,109,110,129,130,168,188,190,190,191,248,249,250,251,268,269,270,289,290,328,329,330,331,348,349,350,351,369,370,92,112,73,74,93,94,113,114,133,134,153,154,193,194,213,214,233,234,253,254,273,274,293,294,353,354,373,274,76,77,96,97,116,117,136,137,156,157,196,197,216,217,236,237,256,257,296,297,316,317,336,337,356,357,271, 65,225,226,49, 189,171, 374]
   const totalCells = cellsWithWalls.concat(outerWalls)
 
   const n = 399
@@ -80,19 +89,16 @@ function init() {
   // Make grid
   function createGrid(playerStartPosition) {
     // Using for loop to create grid, because we can specify how long we want it to run for
-
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
-
       // Set cell number based on i (Turn on for development reasons to see cell index)
-      //cell.innerHTML = i
-
+      // cell.innerHTML = i
       // Add each div to parent grid as children
       grid.appendChild(cell)
-
       // adds's each cell to an array
       cells.push(cell)
     }
+
     addPlayer(playerStartPosition)
   }
 
@@ -100,24 +106,39 @@ function init() {
 
   //* Game engine
 
-  function startTimer() {
-    timerID = setInterval(() => {
-      if (score === 21500 || lives === 0) {
-        resetGame()
-        clearInterval(timerID)
+  function gameStart() {
+    beginningWrapper.classList.add('remove')
+    beginningOverlay.classList.remove('display')
 
-        resetScore()
-        resetLives()
-      }
-    }, 1000)
+    removeStartItem()
+
+    resetGame()
+    setTimeout(() => {
+      addNpcs()
+      addNpctoMove()
+    }, 250)
+
+    //  playSounds()
   }
 
-  startTimer()
+  function startAgain() {
+    resetScore()
+    setTimeout(() => {
+      resetGame()
+    }, 500)
+
+    document.querySelector('.end-text').innerHTML = ''
+    playAgainButton.classList.remove('display')
+    endOverlay.classList.remove('overlay')
+    endWrapper.classList.add('remove')
+  }
 
   function resetGame() {
     resetPlayer()
+    resetNpcs()
     playerCurrentPosition = playerStartPosition
     addItemsToGrid(balls, items.class)
+    removeStartItem()
     addPlayer(playerStartPosition)
   }
 
@@ -132,15 +153,6 @@ function init() {
 
   // * Create the walls from the trees / function to add any item to grid
 
-  // function addWalls() {
-  //   const wall = 'wall'
-  //   for (let i = 0; i < cellsWithWalls.length; i++) {
-  //     cells[cellsWithWalls[i]].classList.add(wall)
-  //   }
-  // }
-
-  // addWalls()
-
   function addItemsToGrid(array, itemType) {
     for (let i = 0; i < array.length; i++) {
       cells[array[i]].classList.add(itemType)
@@ -148,22 +160,28 @@ function init() {
   }
 
   addItemsToGrid(totalCells, wall)
+  addItemsToGrid(balls, items.class)
 
   //** uncomment
-  addItemsToGrid(balls, items.class)
 
   //* NPC's
 
-  //**  Add all ghosts to the grid
+  //**  Add all npc to the grid
 
-  npcs.forEach((npc) => {
-    cells[npc.current].classList.add(npc.classTwo)
-    cells[npc.current].classList.add('npc')
-  })
+  function addNpcs() {
+    npcs.forEach((npc) => {
+      cells[npc.current].classList.add(npc.classTwo)
+      cells[npc.current].classList.add('npc')
+    })
+  }
+
+  function addNpctoMove() {
+    setTimeout(() => {
+      npcs.forEach((npc) => moveNpc(npc))
+    }, 1000)
+  }
 
   //pass each npc in the object through the move npc function
-
-  npcs.forEach((npc) => moveNpc(npc))
 
   function moveNpc(npc) {
     const npcMoves = [-1, +1, -width, width]
@@ -172,78 +190,64 @@ function init() {
     //const position = npc.current + direction
     npc.timerID = setInterval(function () {
       if (
-        // cells.includes(position) ||
-        // position - width < -width ||
-        // position % width === width ||
-        // position % width === 0 ||
-        // position + width >= width * width ||
         !cells[npc.current + direction].classList.contains(wall) &&
         !cells[npc.current + direction].classList.contains('npc')
       ) {
         cells[npc.current].classList.remove(npc.classTwo, 'npc')
         npc.current += direction
 
-        cells[npc.current].classList.add(npc.classTwo, 'ghastly-two')
+        cells[npc.current].classList.add(npc.classTwo, 'npc')
+        if (playerCurrentPosition === playerStartPosition) {
+          return
+        } else {
+          loseLife()
+        }
       } else {
         direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
       }
+      gameOver()
     }, npc.speed)
   }
 
-  // function moveNpc2(npc) {
-  //   const npcMoves = [-1, +1, -width, width]
+  //* reset Game
 
-  //   let direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
-  //   const position = npc.current + direction
-  //   npc.timerID = setInterval(function () {
-  //     if (
-  //       // prettier-ignore
-  //       (position % width !== 0) &&
-  //       (position % width !== width - 1) &&
-  //       (position >= width ) &&
-  //       (position + width <= width * width - 1)
-  //     ) {
-  //       console.log('position is', position)
-  //       console.log(position % width !== 0)
-  //       console.log(position % width !== width - 1)
-  //       console.log(position >= width)
-  //       console.log(position + width <= width * width - 1)
-  //     } else {
-  //       console.log('position is', position)
-  //       console.log(position % width !== 0)
-  //       console.log(position % width !== width - 1)
-  //       console.log(position >= width)
-  //       console.log(position + width <= width * width - 1)
-  //       direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
-  //       console.log('position has changed to', position + direction)
-  //     }
-  //   }, npc.speed)
-  // }
+  function gameOver() {
+    if (score === 17800 || lives === 0) {
+      gameOverOverlay()
+      resetGame()
 
-  // Load NPC 1
+      resetScore()
+      resetLives()
+    }
+  }
+  gameOver()
 
-  // if (cells[npc[0].startPosition].classList.contains(items.class) === true) {
-  //   cells[npc[0].startPosition].classList.remove(items.class)
-  //   cells[npc[0].currentPosition].classList.add(npc[0].class)
-  // }
+  function loseLife() {
+    if (cells[playerCurrentPosition].classList.contains('npc') === true) {
+      resetPlayer()
+      removeStartItem()
+      playerCurrentPosition = playerStartPosition
+      addPlayer(playerStartPosition)
+      lives = lives - 1
+      lifeSelector.innerHTML = lives
+    }
+  }
 
-  // function npcMove() {
-  //   moveNpc = setInterval(() => {
-  //     // Remove class of npc
-  //     cells[npc[0].currentPosition].classList.remove(npc[0].class)
-  //     cells[npc[0].currentPosition].classList.remove(npc[0].classTwo)
+  function resetNpcs() {
+    npcs.forEach((npc) => {
+      cells[npc.current].classList.remove(npc.classTwo, 'npc')
+      npc.current = npc.start
+      addNpcs()
+    })
+  }
 
-  //     // If the cell contains an item add class two if not add class one to stop bug
-  //     if (
-  //       cells[npc[0].currentPosition].classList.contains(items.class) === true
-  //     ) {
-  //       cells[npc[0].currentPosition].classList.add(npc[0].classTwo)
-  //     } else {
-  //       cells[npc[0].currentPosition].classList.add(npc[0].class)
-  //     }
-  //   }, 1000)
-  // }
-  // npcMove()
+  function gameOverOverlay() {
+    const gameOverText = document.querySelector('.end-text')
+    playAgainButton.classList.add('display')
+    gameOverText.innerHTML = `Your score was ${score}`
+    gameOverText.classList.add('display')
+    endOverlay.classList.add('overlay')
+  }
 
   //* Remove class if player on cell
 
@@ -258,16 +262,19 @@ function init() {
     }
   }
 
-  function resetPlayer() {
-    if (
-      cells[playerCurrentPosition].classList.contains(
-        playerClass || playerClassRight || playerClassUp
-      ) === true
-    ) {
-      cells[playerCurrentPosition].classList.remove(playerClass)
-      cells[playerCurrentPosition].classList.remove(playerClassRight)
-      cells[playerCurrentPosition].classList.remove(playerClassUp)
+  function removeStartItem() {
+    if (cells[playerStartPosition].classList.contains(items.class) === true) {
+      cells[playerStartPosition].classList.remove(items.class)
     }
+  }
+  removeStartItem()
+
+  function resetPlayer() {
+    cells[playerCurrentPosition].classList.remove(
+      playerClass,
+      playerClassRight,
+      playerClassUp
+    )
   }
 
   //* Add player to grid and controls
@@ -290,9 +297,11 @@ function init() {
 
   function removePlayer(position) {
     // Remove player to position in grid at index betwen []
-    cells[position].classList.remove(playerClass)
-    cells[position].classList.remove(playerClassRight)
-    cells[position].classList.remove(playerClassUp)
+    cells[position].classList.remove(
+      playerClass,
+      playerClassRight,
+      playerClassUp
+    )
   }
 
   //* Handle keydown controls
@@ -345,15 +354,15 @@ function init() {
       console.log('invalid key')
     }
 
-    //* Lose life if player on same cell as Npc
-    if (cells[playerCurrentPosition].classList.contains('npc') === true) {
-      lives = lives - 1
+    // //* Lose life if player on same cell as Npc
 
-      lifeSelector.innerHTML = lives
-    }
+    loseLife()
     // adds player based on new position by passing it as a paramter
+
     addPlayer(playerCurrentPosition)
   }
+
+  //** Remove removeOverlay
 
   //* Play audio
 
@@ -372,11 +381,17 @@ function init() {
     }
   }
 
-  //audio.play()
-  audio.volume = 0.2
+  function playSounds() {
+    audio.play()
+    audio.volume = 0.2
+  }
+
   //* Event listeners
 
   document.addEventListener('keydown', handleKeyUp)
+  startButton.addEventListener('click', gameStart)
+
+  playAgainButton.addEventListener('click', startAgain)
 
   // DISABLE arrow scrolling cross browsers
 
@@ -407,3 +422,66 @@ function init() {
 }
 
 window.addEventListener('DOMContentLoaded', init)
+
+// Code no longer needed
+
+// cells.includes(position) ||
+// position - width < -width ||
+// position % width === width ||
+// position % width === 0 ||
+// position + width >= width * width ||
+
+// // function moveNpc2(npc) {
+//   const npcMoves = [-1, +1, -width, width]
+
+//   let direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
+//   const position = npc.current + direction
+//   npc.timerID = setInterval(function () {
+//     if (
+//       // prettier-ignore
+//       (position % width !== 0) &&
+//       (position % width !== width - 1) &&
+//       (position >= width ) &&
+//       (position + width <= width * width - 1)
+//     ) {
+//       console.log('position is', position)
+//       console.log(position % width !== 0)
+//       console.log(position % width !== width - 1)
+//       console.log(position >= width)
+//       console.log(position + width <= width * width - 1)
+//     } else {
+//       console.log('position is', position)
+//       console.log(position % width !== 0)
+//       console.log(position % width !== width - 1)
+//       console.log(position >= width)
+//       console.log(position + width <= width * width - 1)
+//       direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
+//       console.log('position has changed to', position + direction)
+//     }
+//   }, npc.speed)
+// }
+
+// Load NPC 1
+
+// if (cells[npc[0].startPosition].classList.contains(items.class) === true) {
+//   cells[npc[0].startPosition].classList.remove(items.class)
+//   cells[npc[0].currentPosition].classList.add(npc[0].class)
+// }
+
+// function npcMove() {
+//   moveNpc = setInterval(() => {
+//     // Remove class of npc
+//     cells[npc[0].currentPosition].classList.remove(npc[0].class)
+//     cells[npc[0].currentPosition].classList.remove(npc[0].classTwo)
+
+//     // If the cell contains an item add class two if not add class one to stop bug
+//     if (
+//       cells[npc[0].currentPosition].classList.contains(items.class) === true
+//     ) {
+//       cells[npc[0].currentPosition].classList.add(npc[0].classTwo)
+//     } else {
+//       cells[npc[0].currentPosition].classList.add(npc[0].class)
+//     }
+//   }, 1000)
+// }
+// npcMove()
