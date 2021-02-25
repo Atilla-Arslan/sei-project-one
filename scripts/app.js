@@ -20,8 +20,7 @@ function init() {
   const beginningOverlay = document.querySelector('.beginning-overlay')
   const endWrapper = document.querySelector('.end-wrapper')
   const endOverlay = document.querySelector('.end-overlay')
-
-  //const cover = document.querySelector('.cover')
+  const soundButton = document.querySelector('.sound-on')
 
   let score = 0
 
@@ -38,7 +37,7 @@ function init() {
   // Where PLAYER starts
 
   const playerStartPosition = 21
-  // Where cat is now
+  // Where PLayer is now
   let playerCurrentPosition = 21
 
   //* WALLS
@@ -46,8 +45,6 @@ function init() {
   // prettier-ignore
   const outerWalls = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,40,60,80,100,120,140,160,180,200,220,240,260,280, 300, 320, 340,360,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,39,59,79,99,119,139,159,179,199,219,239,259,279,299,319,339,359,379,399]
   // prettier-ignore
-
-  //29,30,49,50,89,90,109,110,44,45,64,65,84,85,104,105,124,125,144,145,86,87,106,107,41,42,61,62,81,82,101,102,121,122,141,142,181,182,201,202,221,222,241,242,184,185,204,205,224,225,244,245,264,265,284, 285,304,305,281,282,301,302,321,322,341,342,344, 345, 364, 365, 384, 385, 347, 348, 349, 350, 351, 352, 367, 368 ,369, 370, 371 ,372, 389, 390, 147,148,167,168,187,188,169,170,189,190,151,152,171,172,191,192, 347,348,349,350,351,352,367,368,369,370,371,372,389,390, 92, 93, 112,113,54,55,74,75,94,95,114,115,134,135,154,155,194,195,214,215,234,235,254,255,274,275,294,295,314,315,354,355,374,375,394,395, 57,58,77,78,97,98,117,118,137,138,157,158,197,198,217,218,237,238,257,258,297,298,317,318,337,338,357,358, 247,248,249,250,251,252,267,268,269,270,271,272,289,290,309,310
 
   const cellsWithWalls = [62,63,82,83,102,103,122,123,142,143, 182,183,202,203,222,223,242,243,282,283,302,303,322,323,342,343,66,85,86,87,105,106,107,125,126,145,146,185,186,205,206,245,246,265,266,285,286,345,346,365,366,29,30,39,50,69,70,109,110,129,130,168,188,190,190,191,248,249,250,251,268,269,270,289,290,328,329,330,331,348,349,350,351,369,370,92,112,73,74,93,94,113,114,133,134,153,154,193,194,213,214,233,234,253,254,273,274,293,294,353,354,373,274,76,77,96,97,116,117,136,137,156,157,196,197,216,217,236,237,256,257,296,297,316,317,336,337,356,357,271, 65,225,226,49, 189,171, 374]
   const totalCells = cellsWithWalls.concat(outerWalls)
@@ -64,7 +61,7 @@ function init() {
     cellsWithBall: [balls]
   }
 
-  //* NPC OBJECTS
+  //* NPC OBJECTS / Classes
 
   class Npc {
     constructor(classOne, classTwo, start, speed) {
@@ -79,9 +76,9 @@ function init() {
 
   const npcs = [
     new Npc('ghastly', 'ghastly-two', 150, 250),
-    new Npc('ghastly', 'ghastly-two', 313, 250),
-    new Npc('ghastly', 'ghastly-two', 325, 250),
-    new Npc('ghastly', 'ghastly-two', 38, 250)
+    new Npc('haunter', 'haunter', 313, 300),
+    new Npc('gengar', 'gengar', 325, 500),
+    new Npc('weezing', 'weezing', 38, 400)
   ]
 
   //* GRID GENERATOR
@@ -118,7 +115,7 @@ function init() {
       addNpctoMove()
     }, 250)
 
-    //  playSounds()
+    playSounds()
   }
 
   function startAgain() {
@@ -187,7 +184,7 @@ function init() {
     const npcMoves = [-1, +1, -width, width]
 
     let direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
-    //const position = npc.current + direction
+
     npc.timerID = setInterval(function () {
       if (
         !cells[npc.current + direction].classList.contains(wall) &&
@@ -205,6 +202,7 @@ function init() {
       } else {
         direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
       }
+
       gameOver()
     }, npc.speed)
   }
@@ -351,7 +349,7 @@ function init() {
         addPlayer(playerCurrentPosition)
       }
     } else {
-      console.log('invalid key')
+      //console.log('invalid key')
     }
 
     // //* Lose life if player on same cell as Npc
@@ -362,7 +360,7 @@ function init() {
     addPlayer(playerCurrentPosition)
   }
 
-  //** Remove removeOverlay
+  //** Pause Game
 
   //* Play audio
 
@@ -381,14 +379,31 @@ function init() {
     }
   }
 
+  function muteAudio(event) {
+    event.target.classList.toggle('active')
+    if (event.target.classList.contains('active')) {
+      audio.volume = 0
+      pika.volume = 0
+      pikachuu.volume = 0
+      soundButton.innerText = 'Sound Off'
+    } else {
+      audio.volume = 0.2
+      pika.volume = 0.5
+      pikachuu.volume = 0.5
+      soundButton.innerText = 'Sound On'
+    }
+  }
+
   function playSounds() {
     audio.play()
     audio.volume = 0.2
   }
 
   //* Event listeners
+  soundButton.addEventListener('click', muteAudio)
 
   document.addEventListener('keydown', handleKeyUp)
+
   startButton.addEventListener('click', gameStart)
 
   playAgainButton.addEventListener('click', startAgain)

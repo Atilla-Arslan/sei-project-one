@@ -24,7 +24,9 @@ button {
   cursor: pointer;
   font-weight: 900;
   font-size: 1.2em;
+  z-index: 6;
 }
+
 button:hover {
   background: #cea709;
 }
@@ -39,19 +41,19 @@ header {
 
   color: #ffcb05;
   font-size: 2em;
-  position: sticky;
+
   z-index: 2;
 }
 .header-container {
   max-width: 100%;
   margin: 0 auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 .counters {
   display: flex;
   margin-left: 2rem;
-  margin-top: 2.5rem;
+  margin-top: 0.5rem;
   text-transform: uppercase;
   padding: 2rem;
   width: 40rem;
@@ -61,7 +63,9 @@ header {
   -webkit-text-stroke-color: rgb(8, 31, 241);
 }
 .logo {
-  padding-top: 2.2rem;
+  padding-top: 1rem;
+  margin-left: 1rem;
+  padding: 0.5rem;
   animation: float 5s ease infinite;
 }
 .lives,
@@ -89,7 +93,7 @@ header {
   height: 930px;
   width: 930px;
   align-items: center;
-  /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
   display: flex;
   flex-wrap: wrap;
   border-radius: 30px;
@@ -182,6 +186,76 @@ header {
   overflow: visible;
   position: relative;
 }
+.haunter {
+  background-image: url('https://projectpokemon.org/images/normal-sprite/haunter.gif');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: 0.2rem;
+  background-position-y: -0.2rem;
+  transform: scale(1.5);
+  z-index: 4;
+  overflow: visible;
+  position: relative;
+}
+.gengar {
+  background-image: url('https://projectpokemon.org/images/normal-sprite/gengar.gif');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: 0.2rem;
+  background-position-y: -0.2rem;
+  transform: scale(1.3);
+  z-index: 4;
+  overflow: visible;
+  position: relative;
+}
+.weezing {
+  background-image: url('https://projectpokemon.org/images/normal-sprite/weezing.gif');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: 0.2rem;
+  background-position-y: -0.2rem;
+  transform: scale(2);
+  z-index: 4;
+  overflow: visible;
+  position: relative;
+}
+
+footer {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  z-index: 5;
+}
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.footer-container button {
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-size: 0.8em;
+  margin: 1rem;
+}
+.sound-on {
+  margin-top: -1rem;
+  cursor: pointer;
+}
+.sound-button {
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  border: 4px #3b5ba7 solid;
+  background: #ffcb05;
+  color: #3b5ba7;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 0.7em;
+}
+.game-maker {
+  padding: 2rem;
+
+  color: #354f8e;
+}
 
 /* OVERLAY CSS */
 
@@ -195,7 +269,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 5;
+  z-index: 3;
 }
 
 .beginning-overlay {
