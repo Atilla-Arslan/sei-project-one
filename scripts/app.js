@@ -132,6 +132,7 @@ function init() {
 
   function startAgain() {
     audio.volume = 0.1
+    gameOverSound.volume = 0
     audio.currentTime = 0
     resetScore()
     resetLives()
