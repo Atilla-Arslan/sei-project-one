@@ -99,7 +99,7 @@ header {
   border-radius: 30px;
 
   justify-content: center;
-  background-image: url('../images/pokemon_terrain_trees_new_map.png');
+  background-image: url('images/pokemon_terrain_trees_new_map.png');
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -114,7 +114,7 @@ header {
 }
 
 .pokeball {
-  background-image: url('../images/pokeball-copy.png');
+  background-image: url('images/pokeball-copy.png');
   background-repeat: no-repeat;
   background-size: 1rem;
   background-position-x: 0.7rem;
@@ -124,7 +124,7 @@ header {
   position: relative;
 }
 .thunder-stone {
-  background-image: url('../images/thunder-stone.png');
+  background-image: url('images/thunder-stone.png');
   background-repeat: no-repeat;
   background-size: 1.7rem;
   background-position-x: 0.5rem;
