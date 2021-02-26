@@ -11,6 +11,10 @@ function init() {
   const audio = document.querySelector('audio')
   const pika = document.querySelector('.pika')
   const pikachuu = document.querySelector('.pikachuu')
+  const loseLifesSound = document.querySelector('.lose-life')
+  const pickUp = document.querySelector('.pick-up')
+  const gameOverSound = document.querySelector('.game-over')
+  const youWinSound = document.querySelector('.you-win')
   const scoreSelector = document.querySelector('.score-span')
   const lifeSelector = document.querySelector('.life-span')
 
@@ -26,6 +30,9 @@ function init() {
 
   let lives = 3
   lifeSelector.innerHTML = lives
+
+  let active = false
+  let ballCount = 1
   // Map paramters
 
   const width = 20
@@ -61,6 +68,12 @@ function init() {
     cellsWithBall: [balls]
   }
 
+  const powerPellet = {
+    name: 'thunder-stone',
+    class: 'thunder-stone',
+    cellsWithStone: [121, 371, 215, 118]
+  }
+
   //* NPC OBJECTS / Classes
 
   class Npc {
@@ -75,10 +88,10 @@ function init() {
   }
 
   const npcs = [
-    new Npc('ghastly', 'ghastly-two', 150, 250),
-    new Npc('haunter', 'haunter', 313, 300),
-    new Npc('gengar', 'gengar', 325, 500),
-    new Npc('weezing', 'weezing', 38, 400)
+    new Npc('scared', 'ghastly-two', 150, 250),
+    new Npc('scared', 'haunter', 313, 300),
+    new Npc('scared', 'gengar', 325, 500),
+    new Npc('scared', 'weezing', 38, 400)
   ]
 
   //* GRID GENERATOR
@@ -89,7 +102,7 @@ function init() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
       // Set cell number based on i (Turn on for development reasons to see cell index)
-      // cell.innerHTML = i
+      //cell.innerHTML = i
       // Add each div to parent grid as children
       grid.appendChild(cell)
       // adds's each cell to an array
@@ -108,8 +121,7 @@ function init() {
     beginningOverlay.classList.remove('display')
 
     removeStartItem()
-
-    resetGame()
+    addPowerPellet()
     setTimeout(() => {
       addNpcs()
       addNpctoMove()
@@ -119,7 +131,11 @@ function init() {
   }
 
   function startAgain() {
+    audio.volume = 0.1
+    audio.currentTime = 0
     resetScore()
+    resetLives()
+    addPowerPellet()
     setTimeout(() => {
       resetGame()
     }, 500)
@@ -159,7 +175,9 @@ function init() {
   addItemsToGrid(totalCells, wall)
   addItemsToGrid(balls, items.class)
 
-  //** uncomment
+  function addPowerPellet() {
+    addItemsToGrid(powerPellet.cellsWithStone, powerPellet.class)
+  }
 
   //* NPC's
 
@@ -190,11 +208,27 @@ function init() {
         !cells[npc.current + direction].classList.contains(wall) &&
         !cells[npc.current + direction].classList.contains('npc')
       ) {
-        cells[npc.current].classList.remove(npc.classTwo, 'npc')
+        if (active === false) {
+          cells[npc.current].classList.remove(npc.classTwo, 'npc')
+        } else {
+          cells[npc.current].classList.remove(npc.classTwo, npc.classOne, 'npc')
+        }
+
         npc.current += direction
 
+        if (active === false) {
+          cells[npc.current].classList.add(npc.classTwo, 'npc')
+        } else {
+          cells[npc.current].classList.add(npc.classTwo, npc.classOne, 'npc')
+        }
+
         cells[npc.current].classList.add(npc.classTwo, 'npc')
-        if (playerCurrentPosition === playerStartPosition) {
+
+        if (active === true) {
+          resetNpc()
+        }
+
+        if (playerCurrentPosition === playerStartPosition || active === true) {
           return
         } else {
           loseLife()
@@ -210,24 +244,51 @@ function init() {
   //* reset Game
 
   function gameOver() {
-    if (score === 17800 || lives === 0) {
+    if (lives === 0) {
+      audio.volume = 0
+      gameOverSound.play()
       gameOverOverlay()
-      resetGame()
-
-      resetScore()
-      resetLives()
     }
   }
   gameOver()
 
+  // score >= 17900 ||
+
+  function youWin() {
+    if (ballCount >= balls.length) {
+      audio.volume = 0
+      youWinSound.play()
+      youWinOverlay()
+    }
+  }
+
   function loseLife() {
     if (cells[playerCurrentPosition].classList.contains('npc') === true) {
+      loseLifesSound.play()
       resetPlayer()
       removeStartItem()
       playerCurrentPosition = playerStartPosition
       addPlayer(playerStartPosition)
       lives = lives - 1
       lifeSelector.innerHTML = lives
+    }
+  }
+
+  // Reset position of NPC if player uses power pellet and add score
+
+  function resetNpc() {
+    for (let i = 0; i < npcs.length; i++) {
+      if (
+        cells[playerCurrentPosition].classList.contains(npcs[i].classTwo) ===
+        true
+      ) {
+        // prettier-ignore
+        cells[playerCurrentPosition].classList.remove(npcs[i].classTwo, 'scared', 'npc')
+
+        npcs[i].current = npcs[i].start
+        score = score += 400
+        scoreSelector.innerHTML = score
+      }
     }
   }
 
@@ -246,6 +307,18 @@ function init() {
     gameOverText.classList.add('display')
     endOverlay.classList.add('overlay')
   }
+  function youWinOverlay() {
+    const gameOverText = document.querySelector('.end-text')
+    playAgainButton.classList.add('display')
+
+    gameOverText.innerHTML = 'You Win'
+    setTimeout(() => {
+      gameOverText.innerHTML = `Your score was ${score}`
+    }, 500)
+
+    gameOverText.classList.add('display')
+    endOverlay.classList.add('overlay')
+  }
 
   //* Remove class if player on cell
 
@@ -255,8 +328,29 @@ function init() {
       cells[playerCurrentPosition].classList.remove(items.class)
       score = score += 100
       scoreSelector.innerHTML = score
+      ballCount += 1
     } else {
       pikachuPlay()
+    }
+  }
+
+  function removePellet() {
+    if (
+      cells[playerCurrentPosition].classList.contains(powerPellet.class) ===
+      true
+    ) {
+      pickUp.play()
+      cells[playerCurrentPosition].classList.remove(items.class)
+      cells[playerCurrentPosition].classList.remove(powerPellet.class)
+
+      active = true
+      setTimeout(() => {
+        active = false
+
+        npcs.forEach((npc) => {
+          cells[npc.current].classList.remove(npc.classOne)
+        })
+      }, 10000)
     }
   }
 
@@ -316,6 +410,8 @@ function init() {
       } else {
         playerCurrentPosition++
         removeItem()
+        removePellet()
+
         addPlayerRight(playerCurrentPosition)
       }
     } else if (key === 37 && playerCurrentPosition % width !== 0) {
@@ -325,6 +421,8 @@ function init() {
       } else {
         playerCurrentPosition--
         removeItem()
+        removePellet()
+
         addPlayer(playerCurrentPosition)
       }
     } else if (key === 38 && playerCurrentPosition >= width) {
@@ -334,6 +432,7 @@ function init() {
       } else {
         playerCurrentPosition -= width
         removeItem()
+        removePellet()
         addPlayerUp(playerCurrentPosition)
       }
     } else if (
@@ -346,15 +445,20 @@ function init() {
       } else {
         playerCurrentPosition += width
         removeItem()
+        removePellet()
         addPlayer(playerCurrentPosition)
       }
     } else {
       //console.log('invalid key')
     }
 
+    youWin()
+    console.log(ballCount)
     // //* Lose life if player on same cell as Npc
+    if (active === false) {
+      loseLife()
+    }
 
-    loseLife()
     // adds player based on new position by passing it as a paramter
 
     addPlayer(playerCurrentPosition)
@@ -396,7 +500,8 @@ function init() {
 
   function playSounds() {
     audio.play()
-    audio.volume = 0.2
+    audio.loop === true
+    audio.volume = 0.1
   }
 
   //* Event listeners
@@ -413,7 +518,7 @@ function init() {
   window.addEventListener(
     'keydown',
     (e) => {
-      if (e.target.localName != 'input') {
+      if (e.target.localName !== 'input') {
         // if you need to filter <input> elements
         switch (e.keyCode) {
           case 37: // left
@@ -437,66 +542,3 @@ function init() {
 }
 
 window.addEventListener('DOMContentLoaded', init)
-
-// Code no longer needed
-
-// cells.includes(position) ||
-// position - width < -width ||
-// position % width === width ||
-// position % width === 0 ||
-// position + width >= width * width ||
-
-// // function moveNpc2(npc) {
-//   const npcMoves = [-1, +1, -width, width]
-
-//   let direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
-//   const position = npc.current + direction
-//   npc.timerID = setInterval(function () {
-//     if (
-//       // prettier-ignore
-//       (position % width !== 0) &&
-//       (position % width !== width - 1) &&
-//       (position >= width ) &&
-//       (position + width <= width * width - 1)
-//     ) {
-//       console.log('position is', position)
-//       console.log(position % width !== 0)
-//       console.log(position % width !== width - 1)
-//       console.log(position >= width)
-//       console.log(position + width <= width * width - 1)
-//     } else {
-//       console.log('position is', position)
-//       console.log(position % width !== 0)
-//       console.log(position % width !== width - 1)
-//       console.log(position >= width)
-//       console.log(position + width <= width * width - 1)
-//       direction = npcMoves[Math.floor(Math.random() * npcMoves.length)]
-//       console.log('position has changed to', position + direction)
-//     }
-//   }, npc.speed)
-// }
-
-// Load NPC 1
-
-// if (cells[npc[0].startPosition].classList.contains(items.class) === true) {
-//   cells[npc[0].startPosition].classList.remove(items.class)
-//   cells[npc[0].currentPosition].classList.add(npc[0].class)
-// }
-
-// function npcMove() {
-//   moveNpc = setInterval(() => {
-//     // Remove class of npc
-//     cells[npc[0].currentPosition].classList.remove(npc[0].class)
-//     cells[npc[0].currentPosition].classList.remove(npc[0].classTwo)
-
-//     // If the cell contains an item add class two if not add class one to stop bug
-//     if (
-//       cells[npc[0].currentPosition].classList.contains(items.class) === true
-//     ) {
-//       cells[npc[0].currentPosition].classList.add(npc[0].classTwo)
-//     } else {
-//       cells[npc[0].currentPosition].classList.add(npc[0].class)
-//     }
-//   }, 1000)
-// }
-// npcMove()
