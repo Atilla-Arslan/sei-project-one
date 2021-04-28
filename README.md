@@ -35,13 +35,13 @@ The character seems to jump from grid to grid instead of a smooth movement
 
 To add the individual items to the grid, I created this reusable function which took an array with grid positions as the first argument and the item class as the second argument.
 
-// \* Create the walls from the trees / function to add any item to grid
+````javascript
 
 function addItemsToGrid(array, itemType) { for (let i = 0; i < array.length; i++) { cells[array[i]].classList.add(itemType) } }
 
 addItemsToGrid(totalCells, wall) addItemsToGrid(balls, items.class)
 
-function addPowerPellet() { addItemsToGrid(powerPellet.cellsWithStone, powerPellet.class) }
+function addPowerPellet() { addItemsToGrid(powerPellet.cellsWithStone, powerPellet.class) }```
 
 To determine the position of each of the items I added a grid number to each of the divs on the grid and used this to add the trees to the background image in Photoshop.
 
@@ -78,3 +78,4 @@ It was interesting to see how the more I developed the game, the more new bugs w
 <img width="964" alt="pokemon-pacman" src="https://lh5.googleusercontent.com/-0uKQA5MquiR72xGQVwIOWQmGt3xvKYNyf495MWbPrjIzDkuHtkViX0ZJGSD857KiLnxiz67E8ZR9Yu0cavARWTZ5TTS8LECSwbO2JN1">
 
 <img width="964" alt="pokemon-pacman" src="https://lh4.googleusercontent.com/lCZRhr7DrZ6BnagonqRMrEe8XwE7vkJGyu-08TTbAvHx2cnn5I_LNUaelfqxtgxhwO1p3D91eSUEceeE3G3AfQTuQRlVUr1vnmGpXwVLjiE4VRT5jUAodhNniXOIRe5ri0zLT5Mt">
+````
