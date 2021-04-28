@@ -65,13 +65,13 @@ function init() {
     name: 'normal-pokeball',
     class: 'pokeball',
     score: 100,
-    cellsWithBall: [balls]
+    cellsWithBall: [balls],
   }
 
   const powerPellet = {
     name: 'thunder-stone',
     class: 'thunder-stone',
-    cellsWithStone: [121, 371, 215, 118]
+    cellsWithStone: [121, 371, 215, 118],
   }
 
   //* NPC OBJECTS / Classes
@@ -91,7 +91,7 @@ function init() {
     new Npc('scared', 'ghastly-two', 150, 250),
     new Npc('scared', 'haunter', 313, 300),
     new Npc('scared', 'gengar', 325, 500),
-    new Npc('scared', 'weezing', 38, 400)
+    new Npc('scared', 'weezing', 38, 400),
   ]
 
   //* GRID GENERATOR
@@ -454,7 +454,7 @@ function init() {
     }
 
     youWin()
-    console.log(ballCount)
+
     // //* Lose life if player on same cell as Npc
     if (active === false) {
       loseLife()
@@ -537,7 +537,7 @@ function init() {
     },
     {
       capture: true, // this disables arrow key scrolling in modern Chrome
-      passive: false // this is optional
+      passive: false, // this is optional
     }
   )
 }
