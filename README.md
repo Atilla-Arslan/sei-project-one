@@ -35,13 +35,14 @@ The character seems to jump from grid to grid instead of a smooth movement
 
 To add the individual items to the grid, I created this reusable function which took an array with grid positions as the first argument and the item class as the second argument.
 
-````javascript
+```javascript
 
 function addItemsToGrid(array, itemType) { for (let i = 0; i < array.length; i++) { cells[array[i]].classList.add(itemType) } }
 
 addItemsToGrid(totalCells, wall) addItemsToGrid(balls, items.class)
 
-function addPowerPellet() { addItemsToGrid(powerPellet.cellsWithStone, powerPellet.class) }```
+function addPowerPellet() { addItemsToGrid(powerPellet.cellsWithStone, powerPellet.class) }
+```
 
 To determine the position of each of the items I added a grid number to each of the divs on the grid and used this to add the trees to the background image in Photoshop.
 
