@@ -1,4 +1,4 @@
-# General Assembly SEI - Project One - Eatwell - Readme
+# General Assembly SEI - Project One - Pokemon Pacman - Readme
 
 For the Software Engineering Immersive Course at General Assembly I was given the challenge of making a game, from a predefined list of games using only HTML, CSS and Javascript in one week.
 
