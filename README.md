@@ -76,6 +76,10 @@ I learned a tremendous amount making this game, combining everything I had learn
 
 It was interesting to see how the more I developed the game, the more new bugs would be introduced that I had not thought about. So it was quite a challenge to find and fix these as I went along. I learnt more about why they were introduced making it easier to avoid them next time.
 
+##### Deployed Project:
+
+https://atilla-arslan.github.io/sei-project-one/
+
 <img width="964" alt="pokemon-pacman" src="https://lh3.googleusercontent.com/r3JlFS0hvYMFJS8RiIieiRL6Qn--d1_kLZRDCZ1tVzoXBtRBXMFXS_pPzzOP_GP-kpWX74k0WbV1gqzpgyfIg-lYU9fnN5QjAh6bodDM0sXmUrBvbyTfFCZCPRMytrnlwJ4ju09e">
 
 <img width="964" alt="pokemon-pacman" src="https://lh4.googleusercontent.com/lCZRhr7DrZ6BnagonqRMrEe8XwE7vkJGyu-08TTbAvHx2cnn5I_LNUaelfqxtgxhwO1p3D91eSUEceeE3G3AfQTuQRlVUr1vnmGpXwVLjiE4VRT5jUAodhNniXOIRe5ri0zLT5Mt">
