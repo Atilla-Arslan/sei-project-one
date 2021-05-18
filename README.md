@@ -52,7 +52,7 @@ To determine the position of each of the items I added a grid number to each of 
 
 When it came to add the logic for the ghosts, I found it hard to add the same logic which calculates the edge divs and restricts the movement to the ghost AI, so I had to add an outer wall class to each of the edge divs, this however created a problem with the positioning of item.
 
-To overcome this I had to rebuild the maze in photoshop and add more cells by making it 20 by 20 as opposed to 10 by 10. Which gave me more than enough space.
+To overcome this I had to rebuild the maze in photoshop and add more cells by making it 20 by 20 as opposed to 10 by 10, giving me more space to for the AI's and the player.
 
 ### Ghost Movement:
 
