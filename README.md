@@ -138,7 +138,7 @@ When it came to add the logic for the ghosts, I found it hard to add the same lo
 
 To overcome this I had to rebuild the maze in photoshop and add more cells by making it 20 by 20 as opposed to 10 by 10, giving me more space for the AI's and the player.
 
-#### Ghost Movement:
+##### Ghost Movement:
 
 The original Pacman game had 3 different modes for the ghosts.
 
