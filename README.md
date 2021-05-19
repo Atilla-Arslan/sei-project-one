@@ -173,4 +173,3 @@ https://atilla-arslan.github.io/sei-project-one/
 <img width="964" alt="pokemon-pacman" src="https://lh3.googleusercontent.com/r3JlFS0hvYMFJS8RiIieiRL6Qn--d1_kLZRDCZ1tVzoXBtRBXMFXS_pPzzOP_GP-kpWX74k0WbV1gqzpgyfIg-lYU9fnN5QjAh6bodDM0sXmUrBvbyTfFCZCPRMytrnlwJ4ju09e">
 
 <img width="964" alt="pokemon-pacman" src="https://lh4.googleusercontent.com/lCZRhr7DrZ6BnagonqRMrEe8XwE7vkJGyu-08TTbAvHx2cnn5I_LNUaelfqxtgxhwO1p3D91eSUEceeE3G3AfQTuQRlVUr1vnmGpXwVLjiE4VRT5jUAodhNniXOIRe5ri0zLT5Mt">
-````
