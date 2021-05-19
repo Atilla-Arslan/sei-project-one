@@ -13,7 +13,21 @@ I went with a Pokemon theme, as there were countless game assets online freely a
 
 ### Technologies used:
 
-HTML5 with HTML5 audio CSS3 with animation JavaScript (ES6) Git GitHub Google Fonts Google Chrome dev tools VS Code Eslint Photoshop
+- HTML5 with
+- HTML5 audio
+- CSS3 with animation
+- JavaScript (ES6)
+- Git
+- GitHub
+- Google Fonts
+- Google Chrome dev tools
+- VS Code
+- Eslint
+- Photoshop
+
+##### Deployed Project:
+
+https://atilla-arslan.github.io/sei-project-one/
 
 ## Approach:
 
@@ -23,13 +37,83 @@ I started by creating a 20 by 20 grid of divs that were mapped into an outer con
 
 To move the player I used the Event Listener initiated by ‘Keyup’, which I assigned to the arrow keys on the keyboard. To prevent the player from moving off the edge of the grid or into a wall, I created some logic which restricted movement if a wall class was present or it was any one of the edge divs. I also added some logic to prevent the ghosts moving into any of the walls.
 
-Pros
+I also called the function to lose a life if the player was within the same cell as the npc, within the same function that initiated the movement of the player.
+
+##### Pros
 
 It was easy to create the logic to move the player and ghosts around the map Easy to create logic for ‘collision’ (player loses life if it ends up in the same div as the ghost, and player can take an item when it enters certain divs).
 
-Cons
+##### Cons
 
 The character seems to jump from grid to grid instead of a smooth movement
+
+```Javascript
+  function handleKeyUp(event) {
+    const key = event.keyCode
+
+    removePlayer(playerCurrentPosition)
+
+    if (key === 39 && playerCurrentPosition % width !== width - 1) {
+      // right
+      if (cells[playerCurrentPosition + 1].classList.contains(wall) === true) {
+        playerCurrentPosition
+      } else {
+        playerCurrentPosition++
+        removeItem()
+        removePellet()
+
+        addPlayerRight(playerCurrentPosition)
+      }
+    } else if (key === 37 && playerCurrentPosition % width !== 0) {
+      // Left
+      if (cells[playerCurrentPosition - 1].classList.contains(wall) === true) {
+        addPlayerRight(playerCurrentPosition)
+      } else {
+        playerCurrentPosition--
+        removeItem()
+        removePellet()
+
+        addPlayer(playerCurrentPosition)
+      }
+    } else if (key === 38 && playerCurrentPosition >= width) {
+      // up
+      if (cells[playerCurrentPosition - 20].classList.contains(wall) === true) {
+        playerCurrentPosition
+      } else {
+        playerCurrentPosition -= width
+        removeItem()
+        removePellet()
+        addPlayerUp(playerCurrentPosition)
+      }
+    } else if (
+      key === 40 &&
+      playerCurrentPosition + width <= width * width - 1
+    ) {
+      // down
+      if (cells[playerCurrentPosition + 20].classList.contains(wall) === true) {
+        playerCurrentPosition
+      } else {
+        playerCurrentPosition += width
+        removeItem()
+        removePellet()
+        addPlayer(playerCurrentPosition)
+      }
+    } else {
+      //console.log('invalid key')
+    }
+
+    youWin()
+
+    // //* Lose life if player on same cell as Npc
+    if (active === false) {
+      loseLife()
+    }
+
+    // adds player based on new position by passing it as a paramter
+
+    addPlayer(playerCurrentPosition)
+  }
+```
 
 ### Creating the Maze:
 
@@ -52,15 +136,21 @@ To determine the position of each of the items I added a grid number to each of 
 
 When it came to add the logic for the ghosts, I found it hard to add the same logic which calculates the edge divs and restricts the movement to the ghost AI, so I had to add an outer wall class to each of the edge divs, this however created a problem with the positioning of item.
 
-To overcome this I had to rebuild the maze in photoshop and add more cells by making it 20 by 20 as opposed to 10 by 10. Which gave me more than enough space.
+To overcome this I had to rebuild the maze in photoshop and add more cells by making it 20 by 20 as opposed to 10 by 10, giving me more space for the AI's and the player.
 
-### Ghost Movement:
+#### Ghost Movement:
 
 The original Pacman game had 3 different modes for the ghosts.
 
 Chase - Chases Pac-Man. Scatter - Ghost scattered to their designated target (each ghost had their specific target in the four corners of the maze, designed to make them spread out). Frightened - Ghost runs away from Pac-Man.
 
 My intention was to try and replicate this movement, however due to lack of time, the movement of each ghost in my game is randomly selected using Math.random() to select the direction from an array containing up, down, left or right.
+
+### Wins:
+
+One of the big wins was getting the ghost movement working at all, since it was quite a challenge to make them move properly.
+
+On top of this another one was the big wins was being able to add the power pellet functionality to allow the player to eat the ghosts. As it meant turning the npcs blue and also making the player invulrable for a set period of time and giving the player more points for eating the ghosts.
 
 ## Final Thoughts:
 
