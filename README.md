@@ -31,6 +31,8 @@ https://atilla-arslan.github.io/sei-project-one/
 
 ## Approach:
 
+<img width="964" alt="pokemon-pacman" src="https://lh4.googleusercontent.com/lCZRhr7DrZ6BnagonqRMrEe8XwE7vkJGyu-08TTbAvHx2cnn5I_LNUaelfqxtgxhwO1p3D91eSUEceeE3G3AfQTuQRlVUr1vnmGpXwVLjiE4VRT5jUAodhNniXOIRe5ri0zLT5Mt">
+
 ### Navigation:
 
 I started by creating a 20 by 20 grid of divs that were mapped into an outer container div. The player and ghosts were positioned on the grid by adding css classes with a background image and then removing those classes to give the appearance of movement.
@@ -227,5 +229,3 @@ It was interesting to see how the more I developed the game, the more new bugs w
 https://atilla-arslan.github.io/sei-project-one/
 
 <img width="964" alt="pokemon-pacman" src="https://lh3.googleusercontent.com/r3JlFS0hvYMFJS8RiIieiRL6Qn--d1_kLZRDCZ1tVzoXBtRBXMFXS_pPzzOP_GP-kpWX74k0WbV1gqzpgyfIg-lYU9fnN5QjAh6bodDM0sXmUrBvbyTfFCZCPRMytrnlwJ4ju09e">
-
-<img width="964" alt="pokemon-pacman" src="https://lh4.googleusercontent.com/lCZRhr7DrZ6BnagonqRMrEe8XwE7vkJGyu-08TTbAvHx2cnn5I_LNUaelfqxtgxhwO1p3D91eSUEceeE3G3AfQTuQRlVUr1vnmGpXwVLjiE4VRT5jUAodhNniXOIRe5ri0zLT5Mt">
