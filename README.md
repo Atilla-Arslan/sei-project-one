@@ -132,6 +132,62 @@ To determine the position of each of the items I added a grid number to each of 
 
 <img width="964" alt="pokemon-pacman" src="https://lh4.googleusercontent.com/Ht5SM-l1_SvwfI6YMHPNgLAVmCtnmOjzO5-fxI-zpUJd7HrJhnFVso8cMdmFcSi12EdKlhVn2bIbseNAEvNGJ-aY76gunI7WJ16SZysTgNlUfmMb2BREfzbILPBdj7beUehBrYY1">
 
+### Grid Information:
+
+To determine exactly which cells, which assets or walls would go, I had to determine which cells they would go in and store each asset or wall cell number in an array.
+
+In order to find out which cells the pokeballs would go in I created a function that would check the total number of cells and see if any of cells contained walls and if they didn't would create a new array with cell numbers that did not contain walls and add balls.
+
+For the NPC's I created a Class which acted as a model for the NPC and standardised the CSS classes used, start position and movement speed.
+
+For the items I created simple Objects with the name, css class, score given when consumed and cells containing the items.
+
+```Javascript
+const outerWalls = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,40,60,80,100,120,140,160,180,200,220,240,260,280, 300, 320, 340,360,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,39,59,79,99,119,139,159,179,199,219,239,259,279,299,319,339,359,379,399]
+  // prettier-ignore
+
+  const cellsWithWalls = [62,63,82,83,102,103,122,123,142,143, 182,183,202,203,222,223,242,243,282,283,302,303,322,323,342,343,66,85,86,87,105,106,107,125,126,145,146,185,186,205,206,245,246,265,266,285,286,345,346,365,366,29,30,39,50,69,70,109,110,129,130,168,188,190,190,191,248,249,250,251,268,269,270,289,290,328,329,330,331,348,349,350,351,369,370,92,112,73,74,93,94,113,114,133,134,153,154,193,194,213,214,233,234,253,254,273,274,293,294,353,354,373,274,76,77,96,97,116,117,136,137,156,157,196,197,216,217,236,237,256,257,296,297,316,317,336,337,356,357,271, 65,225,226,49, 189,171, 374]
+  const totalCells = cellsWithWalls.concat(outerWalls)
+
+  const n = 399
+  const [, ...result] = Array(n + 1).keys()
+  const balls = result.filter((n) => !totalCells.includes(n))
+  //* ITEM OBJECTS
+
+  const items = {
+    name: 'normal-pokeball',
+    class: 'pokeball',
+    score: 100,
+    cellsWithBall: [balls],
+  }
+
+  const powerPellet = {
+    name: 'thunder-stone',
+    class: 'thunder-stone',
+    cellsWithStone: [121, 371, 215, 118],
+  }
+
+  //* NPC OBJECTS / Classes
+
+  class Npc {
+    constructor(classOne, classTwo, start, speed) {
+      this.classOne = classOne
+      this.classTwo = classTwo
+      this.start = start
+      this.speed = speed
+      this.current = this.start
+      this.timerID = NaN
+    }
+  }
+
+  const npcs = [
+    new Npc('scared', 'ghastly-two', 150, 250),
+    new Npc('scared', 'haunter', 313, 300),
+    new Npc('scared', 'gengar', 325, 500),
+    new Npc('scared', 'weezing', 38, 400),
+  ]
+```
+
 ### Challenges:
 
 When it came to add the logic for the ghosts, I found it hard to add the same logic which calculates the edge divs and restricts the movement to the ghost AI, so I had to add an outer wall class to each of the edge divs, this however created a problem with the positioning of item.
