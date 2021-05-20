@@ -37,17 +37,17 @@ https://atilla-arslan.github.io/sei-project-one/
 
 I started by creating a 20 by 20 grid of divs that were mapped into an outer container div. The player and ghosts were positioned on the grid by adding css classes with a background image and then removing those classes to give the appearance of movement.
 
-To move the player I used the Event Listener initiated by ‘Keyup’, which I assigned to the arrow keys on the keyboard. To prevent the player from moving off the edge of the grid or into a wall, I created some logic which restricted movement if a wall class was present or it was any one of the edge divs. I also added some logic to prevent the ghosts moving into any of the walls.
+To move the player I used the Event Listener initiated by ‘Keyup’, which I assigned to the arrow keys on the keyboard. To prevent the player from moving off the edge of the grid or into a wall, I created some logic which restricted movement if a wall class was present, or it was any one of the edge divs. I also added some logic to prevent the ghosts moving into any of the walls.
 
 I also called the function to lose a life if the player was within the same cell as the npc, within the same function that initiated the movement of the player.
 
 ##### Pros
 
-It was easy to create the logic to move the player and ghosts around the map Easy to create logic for ‘collision’ (player loses life if it ends up in the same div as the ghost, and player can take an item when it enters certain divs).
+It was easy to create the logic to move the player and ghosts around the map and to create logic for ‘collision’ (player loses life if it ends up in the same div as the ghost, and player can take an item when it enters certain divs).
 
 ##### Cons
 
-The character seems to jump from grid to grid instead of a smooth movement
+The character seems to jump from grid to grid instead of a smooth movement.
 
 ```Javascript
   function handleKeyUp(event) {
@@ -130,15 +130,15 @@ addItemsToGrid(totalCells, wall) addItemsToGrid(balls, items.class)
 function addPowerPellet() { addItemsToGrid(powerPellet.cellsWithStone, powerPellet.class) }
 ```
 
-To determine the position of each of the items I added a grid number to each of the divs on the grid and used this to add the trees to the background image in Photoshop.
+To determine the position of each of the items, I added a grid number to each of the divs on the grid and used this to add the trees to the background image in Photoshop.
 
 <img width="964" alt="pokemon-pacman" src="https://lh4.googleusercontent.com/Ht5SM-l1_SvwfI6YMHPNgLAVmCtnmOjzO5-fxI-zpUJd7HrJhnFVso8cMdmFcSi12EdKlhVn2bIbseNAEvNGJ-aY76gunI7WJ16SZysTgNlUfmMb2BREfzbILPBdj7beUehBrYY1">
 
 ### Grid Information:
 
-To determine exactly which cells, which assets or walls would go, I had to determine which cells they would go in and store each asset or wall cell number in an array.
+To determine exactly which cells, which assets or which walls would go where, I had to determine which cells they would go in and store each asset or wall cell number in an array.
 
-In order to find out which cells the pokeballs would go in I created a function that would check the total number of cells and see if any of cells contained walls and if they didn't would create a new array with cell numbers that did not contain walls and add balls.
+In order to find out which cells the pokeballs would go in, I created a function that would check the total number of cells and then check if any of cells contained walls and if they didn't it would create a new array with cell numbers that did not contain walls and add balls.
 
 For the NPC's I created a Class which acted as a model for the NPC and standardised the CSS classes used, start position and movement speed.
 
@@ -208,7 +208,7 @@ My intention was to try and replicate this movement, however due to lack of time
 
 One of the big wins was getting the ghost movement working at all, since it was quite a challenge to make them move properly.
 
-On top of this another one was the big wins was being able to add the power pellet functionality to allow the player to eat the ghosts. As it meant turning the npcs blue and also making the player invulrable for a set period of time and giving the player more points for eating the ghosts.
+On top of this, another big wins was being able to add the power pellet functionality to allow the player to eat the ghosts. This meant turning the npcs blue and also making the player invulrable for a set period of time, whilst also giving the player more points for eating the ghosts.
 
 ## Final Thoughts:
 
